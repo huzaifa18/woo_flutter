@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gifimage/flutter_gifimage.dart';
 import 'package:woo_flutter/Screens/Splash/components/background.dart';
-import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
+  //ImageProvider logo = AssetImage("assets/icons/woo.gif");
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -15,11 +14,13 @@ class Body extends StatelessWidget {
           children: <Widget>[
             /*GifImage(
               controller: controller,
-              image: AssetImage("assets/images/woo_gif.gif"),
+              image: AssetImage("assets/images/woo.gif"),
             ),*/
-            SvgPicture.asset(
-              "assets/icons/chat.svg",
-              height: size.height * 0.45,
+            Image.asset(
+              "assets/gifs/woo.gif",
+              gaplessPlayback: true,
+              height: 300,
+              width: 300,
             ),
             SizedBox(height: size.height * 0.05),
             Container(

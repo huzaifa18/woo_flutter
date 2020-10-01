@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gifimage/flutter_gifimage.dart';
 import 'package:woo_flutter/Screens/Splash/components/background.dart';
-import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
   @override

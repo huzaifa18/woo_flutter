@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:woo_flutter/Screens/Splash/Splash.dart';
-import 'package:woo_flutter/constants.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 
 void main() {
@@ -17,11 +16,15 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         primarySwatch: Colors.purple,
         accentColor: Colors.white,
+        canvasColor: Colors.white,
+        bottomAppBarColor: Colors.black,
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.purple,
-        accentColor: Colors.white,
+        accentColor: Colors.black,
+        canvasColor: Colors.black,
+        bottomAppBarColor: Colors.white,
       ),
       initial: AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => MaterialApp(

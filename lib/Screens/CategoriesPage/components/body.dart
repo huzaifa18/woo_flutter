@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:woo_flutter/Screens/CategoriesPage/components/background.dart';
-import 'package:woo_flutter/Screens/Dashboard/container_transition.dart';
-import 'package:woo_flutter/Screens/Dashboard/dashboard.dart';
+import 'package:woo_flutter/Screens/Home/Home.dart';
 import 'package:woo_flutter/api/RestClient.dart';
 import 'package:woo_flutter/api/ServerError.dart';
 import 'package:woo_flutter/models/BaseModel.dart';
@@ -10,6 +11,8 @@ import 'package:woo_flutter/models/ProductModelAPI.dart';
 
 class Body extends StatelessWidget {
   int categoryID = 239;
+  StreamController<List<ProductModelAPI>> _productController =
+      new StreamController();
 
   final List products = [
     {
@@ -146,6 +149,54 @@ class Body extends StatelessWidget {
                       : Center(child: CircularProgressIndicator());
                 },
               )),
+          Container(
+            child: StreamBuilder(
+              stream: _productController.stream,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ProductModelAPI>> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return Center(
+                      child: Text('Loading'),
+                    );
+                    break;
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                    break;
+                  case ConnectionState.active:
+                    return Center(
+                      child: Text(
+                        snapshot.data.length == null
+                            ? 'Null'
+                            : snapshot.data.length,
+                        style: Theme.of(context).textTheme.display1,
+                      ),
+                    );
+                    break;
+                  case ConnectionState.done:
+                    print('Done is fucking here ${snapshot.data}');
+                    if (snapshot.hasData) {
+                      return Center(
+                        child: Text(
+                          snapshot.data.length == null
+                              ? 'Null'
+                              : snapshot.data.length,
+                          style: Theme.of(context).textTheme.display1,
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Has Error');
+                    } else {
+                      return Text('Error');
+                    }
+                    break;
+                }
+                return Text('Non in Switch');
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -166,7 +217,6 @@ class Body extends StatelessWidget {
                 onTap: () {
                   categoryID = items[index].id;
                   print("Category ID: $categoryID");
-                  //productsWidget();
                 },
                 child: Container(
                   padding: EdgeInsets.all(8.0),
@@ -199,6 +249,7 @@ class Body extends StatelessWidget {
         //childAspectRatio: 1,
         crossAxisCount: 3,
         children: List.generate(items.length, (index) {
+          _productController.add(items);
           String price = items[index].price;
           String image;
           if (items[index].images.length > 0) {

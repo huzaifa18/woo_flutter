@@ -1,17 +1,12 @@
 # woo_flutter
 
 A Flutter based woocommerce application with a sleek design and Support for both dark and light mode.
-<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
 
-<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_dark.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
+<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" /><img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_dark.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
 
-<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/home_light.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
+<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/home_light.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" /><img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/home_dark.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
 
-<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/home_dark.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
-
-<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/details_light.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
-
-<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/details_dark.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
+<img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/details_light.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" /><img src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/details_dark.jpg" data-canonical-src="https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg" width="200" height="400" />
 
 ## Getting Started
 

@@ -58,6 +58,26 @@ class _RestClient implements RestClient {
   }
 
   @override
+  getProductByID(productId) async {
+    ArgumentError.checkNotNull(productId, 'productId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': productId};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.request('products?',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    var value = _result.data
+        .map((dynamic i) => ProductModelAPI.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
   getProductsbyCategoryId(categoryId) async {
     ArgumentError.checkNotNull(categoryId, 'categoryId');
     const _extra = <String, dynamic>{};

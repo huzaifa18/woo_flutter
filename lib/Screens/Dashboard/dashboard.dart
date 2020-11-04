@@ -15,7 +15,7 @@ import 'package:woo_flutter/constants.dart';
 import 'package:woo_flutter/models/BaseModel.dart';
 import 'package:woo_flutter/models/CategoryModelAPI.dart';
 import 'package:woo_flutter/models/ProductModelAPI.dart';
-import 'container_transition.dart';
+import '../ProductDetails/product_detail.dart';
 
 void main() => runApp(dashboard());
 
@@ -267,12 +267,13 @@ class _MyDashBoardState extends State<dashboard> {
         index: _selectedIndex,
         height: 50.0,
         items: <Widget>[
-          Icon(Icons.home, color: kPrimaryColor, size: 30),
-          Icon(Icons.favorite_border, color: kPrimaryColor, size: 30),
-          Icon(Icons.shopping_cart, color: kPrimaryColor, size: 30),
-          Icon(Icons.person_outline, color: kPrimaryColor, size: 30)
+          Icon(Icons.home, color: Colors.white, size: 30),
+          Icon(Icons.favorite_border, color: Colors.white, size: 30),
+          Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+          Icon(Icons.person_outline, color: Colors.white, size: 30),
         ],
         backgroundColor: Theme.of(context).bottomAppBarColor,
+        color: Theme.of(context).primaryColor,
         animationCurve: Curves.easeOut,
         animationDuration: Duration(milliseconds: 600),
         onTap: (index) {
@@ -333,7 +334,7 @@ class _MyDashBoardState extends State<dashboard> {
           Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (BuildContext context) {
-                return OpenContainerTransformDemo();
+                return ProductDetail();
               },
             ),
           );

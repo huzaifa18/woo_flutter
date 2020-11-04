@@ -234,6 +234,64 @@ class ProductModelAPI extends Equatable {
     return 'ProductModelAPI{id: $id, name: $name, slug: $slug, permalink: $permalink, date_created: $date_created, date_created_gmt: $date_created_gmt, date_modified: $date_modified, date_modified_gmt: $date_modified_gmt, type: $type, status: $status, featured: $featured, catalog_visibility: $catalog_visibility, description: $description, short_description: $short_description, sku: $sku, price: $price, regular_price: $regular_price, sale_price: $sale_price, date_on_sale_from: $date_on_sale_from, date_on_sale_from_gmt: $date_on_sale_from_gmt, date_on_sale_to: $date_on_sale_to, date_on_sale_to_gmt: $date_on_sale_to_gmt, price_html: $price_html, on_sale: $on_sale, purchasable: $purchasable, total_sales: $total_sales, virtual: $virtual, downloadable: $downloadable, downloads: $downloads, download_limit: $download_limit, download_expiry: $download_expiry, external_url: $external_url, button_text: $button_text, tax_status: $tax_status, tax_class: $tax_class, manage_stock: $manage_stock, stock_quantity: $stock_quantity, stock_status: $stock_status, backorders: $backorders, backorders_allowed: $backorders_allowed, backordered: $backordered, sold_individually: $sold_individually, weight: $weight, shipping_required: $shipping_required, shipping_taxable: $shipping_taxable, shipping_class: $shipping_class, shipping_class_id: $shipping_class_id, reviews_allowed: $reviews_allowed, average_rating: $average_rating, rating_count: $rating_count, related_ids: $related_ids, upsell_ids: $upsell_ids, cross_sell_ids: $cross_sell_ids, parent_id: $parent_id, purchase_note: $purchase_note, variations: $variations, grouped_products: $grouped_products, menu_order: $menu_order}';
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'slug': slug,
+      'permalink': permalink,
+      'date_created': date_created,
+      'date_created_gmt': date_created_gmt,
+      'date_modified': date_modified,
+      'date_modified_gmt': date_modified_gmt,
+      'type': type,
+      'status': status,
+      'featured': featured,
+      'catalog_visibility': catalog_visibility,
+      'description': description,
+      'short_description': short_description,
+      'sku': sku,
+      'price': price,
+      'regular_price': regular_price,
+      'sale_price': sale_price,
+      'date_on_sale_from': date_on_sale_from,
+      'date_on_sale_from_gmt': date_on_sale_from_gmt,
+      'date_on_sale_to': date_on_sale_to,
+      'date_on_sale_to_gmt': date_on_sale_to_gmt,
+      'price_html': price_html,
+      'on_sale': on_sale,
+      'purchasable': purchasable,
+      'total_sales': total_sales,
+      'virtual': virtual,
+      'downloadable': downloadable,
+
+      'download_limit': download_limit,
+      'download_expiry': download_expiry,
+      'external_url': external_url,
+      'button_text': button_text,
+      'tax_status': tax_status,
+      'tax_class': tax_class,
+      'manage_stock': manage_stock,
+      'stock_quantity': stock_quantity,
+      'stock_status': stock_status,
+      'backorders': backorders,
+      'backorders_allowed': backorders_allowed,
+      'backordered': backordered,
+      'sold_individually': sold_individually,
+      'weight': weight,
+      'shipping_required': shipping_required,
+      'shipping_taxable': shipping_taxable,
+      'shipping_class': shipping_class,
+      'shipping_class_id': shipping_class_id,
+      'reviews_allowed': reviews_allowed,
+      'average_rating': average_rating,
+      'rating_count': rating_count,
+
+      'parent_id': parent_id,
+      'purchase_note': purchase_note
+    };
+  }
+
   @override
   List<Object> get props => [
         id,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:woo_flutter/Screens/Splash/Splash.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 
@@ -17,14 +18,35 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         accentColor: Colors.white,
         canvasColor: Colors.white,
-        bottomAppBarColor: Colors.black,
+        bottomAppBarColor: Colors.white,
+        textTheme: GoogleFonts.ralewayTextTheme(
+          Theme.of(context).textTheme.apply(
+              displayColor: Colors.purple,
+              bodyColor: Colors.purple
+          ),
+        ),
+        primaryTextTheme:
+            GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme.apply(
+                displayColor: Colors.white,
+                bodyColor: Colors.white
+            )),
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.purple,
         accentColor: Colors.black,
         canvasColor: Colors.black,
-        bottomAppBarColor: Colors.white,
+        bottomAppBarColor: Colors.black54,
+        textTheme:
+            GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme.apply(
+                displayColor: Colors.white,
+                bodyColor: Colors.white
+            )),
+        primaryTextTheme:
+            GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme.apply(
+              displayColor: Colors.white,
+              bodyColor: Colors.white
+            )),
       ),
       initial: AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => MaterialApp(

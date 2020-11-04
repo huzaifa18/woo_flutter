@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:woo_flutter/Screens/CategoriesPage/components/background.dart';
-import 'package:woo_flutter/Screens/Dashboard/container_transition.dart';
+import 'file:///D:/Huzaifa%20Asif/FlutterProjects/woo_flutter/lib/Screens/ProductDetails/product_detail.dart';
 import 'package:woo_flutter/api/RestClient.dart';
 import 'package:woo_flutter/api/ServerError.dart';
 import 'package:woo_flutter/constants.dart';
@@ -108,7 +108,7 @@ class _CartState extends State<CartPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
                         builder: (BuildContext context) {
-                          return OpenContainerTransformDemo();
+                          return ProductDetail();
                         },
                       ),
                     );

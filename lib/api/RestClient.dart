@@ -30,6 +30,9 @@ abstract class RestClient {
   Future<List<ProductModelAPI>> getProducts();
 
   @GET("products?")
+  Future<List<ProductModelAPI>> getProductByID(@Query("id") int productId);
+
+  @GET("products?")
   Future<List<ProductModelAPI>> getProductsbyCategoryId(
       @Query("category") int categoryId);
 }

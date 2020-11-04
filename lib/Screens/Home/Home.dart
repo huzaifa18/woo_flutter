@@ -4,14 +4,18 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:woo_flutter/ProductsByCategory/productsbycategory.dart';
 import 'package:woo_flutter/Screens/Account/Account.dart';
 import 'package:woo_flutter/Screens/Cart/Cart.dart';
 import 'package:woo_flutter/Screens/CategoriesPage/Categories.dart';
-import 'package:woo_flutter/Screens/Dashboard/container_transition.dart';
+import 'file:///D:/Huzaifa%20Asif/FlutterProjects/woo_flutter/lib/Screens/ProductDetails/product_detail.dart';
 import 'package:woo_flutter/Screens/Favourites/Favourites.dart';
+import 'package:woo_flutter/Screens/ProductDetails/details_screen.dart';
 import 'package:woo_flutter/api/RestClient.dart';
 import 'package:woo_flutter/api/ServerError.dart';
+import 'package:woo_flutter/db/DatabaseHelper.dart';
 import 'package:woo_flutter/models/BaseModel.dart';
+import 'package:woo_flutter/models/Cart.dart';
 import 'package:woo_flutter/models/CategoryModelAPI.dart';
 import 'package:woo_flutter/models/ProductModelAPI.dart';
 
@@ -25,6 +29,8 @@ int itemcount = 1;
 int totalprice = 1;
 
 var logger = Logger();
+
+final dbHelper = DatabaseHelper.instance;
 
 final List<String> imgList = [
   'https://attraitbyaliroy.com/wp-content/uploads/revslider/kuteshop-opt-04/bg23-768x406.png',
@@ -190,7 +196,7 @@ class Home extends StatelessWidget {
               print("Error: " + snapshot.error);
             }
             return snapshot.hasData
-                ? _buildCategoriesList(snapshot.data.data)
+                ? _buildCategoriesList(snapshot.data.data,context)
                 : Center(child: CircularProgressIndicator());
           },
         ),
@@ -279,7 +285,7 @@ class Home extends StatelessWidget {
   }
 
   //use stack for overlapping
-  Widget _buildCategoriesList(List<CategoryModelAPI> items) {
+  Widget _buildCategoriesList(List<CategoryModelAPI> items,BuildContext context) {
     /*getCategories().then((it) {
       logger.e(it);
       if (it != null || it.data.length > 0) {
@@ -352,7 +358,15 @@ class Home extends StatelessWidget {
                 ],
               ),
             ),
-            onTap: _categoryClick,
+            onTap: (){
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) {
+                    return ProductByCategory();
+                  },
+                ),
+              );
+            },
           );
         }),
       );
@@ -364,7 +378,7 @@ class Home extends StatelessWidget {
     return itemCards;
   }
 
-  _buildProductsList(List<ProductModelAPI> items) {
+  _buildProductsList(List<ProductModelAPI> items){
     Widget itemCards;
     if (items != null || items.length > 0) {
       itemCards = SizedBox(
@@ -376,6 +390,7 @@ class Home extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
             itemBuilder: (context, index) {
+              _insert(items[index]);
               String price = items[index].price;
               String image;
               if (items[index].images.length > 0) {
@@ -389,7 +404,7 @@ class Home extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
                         builder: (BuildContext context) {
-                          return OpenContainerTransformDemo();
+                          return Details(items[index]);
                         },
                       ),
                     );
@@ -431,5 +446,9 @@ class Home extends StatelessWidget {
     return itemCards;
   }
 
-  void _categoryClick() {}
+  void _insert(ProductModelAPI product) async {
+    final id = await dbHelper.insert(product);
+    print('inserted row id: $id');
+  }
+
 }

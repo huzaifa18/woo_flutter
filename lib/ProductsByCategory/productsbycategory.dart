@@ -1,5 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:woo_flutter/Screens/Home/Home.dart';
+import 'package:woo_flutter/Screens/ProductDetails/details_screen.dart';
+import 'package:woo_flutter/Screens/ProductDetails/product_detail.dart';
+import 'package:woo_flutter/api/RestClient.dart';
+import 'package:woo_flutter/api/ServerError.dart';
+import 'package:woo_flutter/models/BaseModel.dart';
+import 'package:woo_flutter/models/CategoryModelAPI.dart';
+import 'package:woo_flutter/models/ProductModelAPI.dart';
 
 const String _loremIpsumParagraph =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod '
@@ -17,43 +26,41 @@ const String _loremIpsumParagraph =
     'amet commodo nulla. Pretium viverra suspendisse potenti nullam ac tortor '
     'vitae.\n'
     '\n'
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod '
-    'tempor incididunt ut labore et dolore magna aliqua. Vulputate dignissim '
-    'suspendisse in est. Ut ornare lectus sit amet. Eget nunc lobortis mattis '
-    'aliquam faucibus purus in. Hendrerit gravida rutrum quisque non tellus '
-    'orci ac auctor. Mattis aliquam faucibus purus in massa. Tellus rutrum '
-    'tellus pellentesque eu tincidunt tortor. Nunc eget lorem dolor sed. Nulla '
-    'at volutpat diam ut venenatis tellus in metus. Tellus cras adipiscing enim '
-    'eu turpis. Pretium fusce id velit ut tortor. Adipiscing enim eu turpis '
-    'egestas pretium. Quis varius quam quisque id. Blandit aliquam etiam erat '
-    'velit scelerisque. In nisl nisi scelerisque eu. Semper risus in hendrerit '
-    'gravida rutrum quisque. Suspendisse in est ante in nibh mauris cursus '
-    'mattis molestie. Adipiscing elit duis tristique sollicitudin nibh sit '
-    'amet commodo nulla. Pretium viverra suspendisse potenti nullam ac tortor '
-    'vitae';
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ';
 
 const double _fabDimension = 56.0;
 
-/// The demo page for [OpenContainerTransform].
-class OpenContainerTransformDemo extends StatefulWidget {
+Future<BaseModel<List<ProductModelAPI>>> getProductsByCategory(int id) async {
+  List<ProductModelAPI> response;
+  try {
+    response = await RestClient().getProductsbyCategoryId(id);
+    logger.e("Log Response: " + response.toString());
+    print("Print Response: $response");
+  } catch (error, stacktrace) {
+    print("Exception occured: $error stackTrace: $stacktrace");
+    return BaseModel()..setException(ServerError.withError(error: error));
+  }
+  return BaseModel()..data = response;
+}
+
+ContainerTransitionType _transitionType = ContainerTransitionType.fade;
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+void _showMarkedAsDoneSnackbar(bool isMarkedAsDone) {
+  if (isMarkedAsDone ?? false)
+    scaffoldKey.currentState.showSnackBar(const SnackBar(
+      content: Text('Marked as done!'),
+    ));
+}
+
+class ProductByCategory extends StatefulWidget {
   @override
-  _OpenContainerTransformDemoState createState() {
-    return _OpenContainerTransformDemoState();
+  _ProductByCategoryState createState() {
+    return _ProductByCategoryState();
   }
 }
 
-class _OpenContainerTransformDemoState
-    extends State<OpenContainerTransformDemo> {
-  ContainerTransitionType _transitionType = ContainerTransitionType.fade;
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void _showMarkedAsDoneSnackbar(bool isMarkedAsDone) {
-    if (isMarkedAsDone ?? false)
-      scaffoldKey.currentState.showSnackBar(const SnackBar(
-        content: Text('Marked as done!'),
-      ));
-  }
-
+class _ProductByCategoryState extends State<ProductByCategory> {
   void _showSettingsBottomModalSheet(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -109,7 +116,7 @@ class _OpenContainerTransformDemoState
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Text('Container transform'),
+        title: const Text('Product Details'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.settings),
@@ -122,23 +129,8 @@ class _OpenContainerTransformDemoState
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
-          _OpenContainerWrapper(
-            transitionType: _transitionType,
-            closedBuilder: (BuildContext _, VoidCallback openContainer) {
-              return _ExampleCard(openContainer: openContainer);
-            },
-            onClosed: _showMarkedAsDoneSnackbar,
-          ),
           const SizedBox(height: 16.0),
-          _OpenContainerWrapper(
-            transitionType: _transitionType,
-            closedBuilder: (BuildContext _, VoidCallback openContainer) {
-              return _ExampleSingleTile(openContainer: openContainer);
-            },
-            onClosed: _showMarkedAsDoneSnackbar,
-          ),
-          const SizedBox(height: 16.0),
-          Row(
+          /*Row(
             children: <Widget>[
               Expanded(
                 child: _OpenContainerWrapper(
@@ -166,74 +158,22 @@ class _OpenContainerTransformDemoState
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 16.0),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _OpenContainerWrapper(
-                  transitionType: _transitionType,
-                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                    return _SmallerCard(
-                      openContainer: openContainer,
-                      subtitle: 'Secondary',
-                    );
-                  },
-                  onClosed: _showMarkedAsDoneSnackbar,
-                ),
+          ),*/
+          Column(children: <Widget>[
+            Container(
+              child: FutureBuilder<BaseModel<List<ProductModelAPI>>>(
+                future: getProductsByCategory(239),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    print("Error: " + snapshot.error);
+                  }
+                  return snapshot.hasData
+                      ? _buildProductsList(snapshot.data.data, context)
+                      : Center(child: CircularProgressIndicator());
+                },
               ),
-              const SizedBox(width: 8.0),
-              Expanded(
-                child: _OpenContainerWrapper(
-                  transitionType: _transitionType,
-                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                    return _SmallerCard(
-                      openContainer: openContainer,
-                      subtitle: 'Secondary',
-                    );
-                  },
-                  onClosed: _showMarkedAsDoneSnackbar,
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              Expanded(
-                child: _OpenContainerWrapper(
-                  transitionType: _transitionType,
-                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                    return _SmallerCard(
-                      openContainer: openContainer,
-                      subtitle: 'Secondary',
-                    );
-                  },
-                  onClosed: _showMarkedAsDoneSnackbar,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16.0),
-          ...List<Widget>.generate(10, (int index) {
-            return OpenContainer<bool>(
-              transitionType: _transitionType,
-              openBuilder: (BuildContext _, VoidCallback openContainer) {
-                return const _DetailsPage();
-              },
-              onClosed: _showMarkedAsDoneSnackbar,
-              tappable: false,
-              closedShape: const RoundedRectangleBorder(),
-              closedElevation: 0.0,
-              closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                return ListTile(
-                  leading: Image.asset(
-                    'assets/avatar_logo.png',
-                    width: 40,
-                  ),
-                  onTap: openContainer,
-                  title: Text('List item ${index + 1}'),
-                  subtitle: const Text('Secondary text'),
-                );
-              },
-            );
-          }),
+            ),
+          ]),
         ],
       ),
       floatingActionButton: OpenContainer(
@@ -243,7 +183,7 @@ class _OpenContainerTransformDemoState
             includeMarkAsDoneButton: false,
           );
         },
-        closedElevation: 6.0,
+        closedElevation: 8.0,
         closedShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(_fabDimension / 2),
@@ -267,179 +207,75 @@ class _OpenContainerTransformDemoState
   }
 }
 
+Widget _buildProductsList(List<ProductModelAPI> items, BuildContext context) {
+  Widget itemCards;
+  if (items != null || items.length > 0) {
+    itemCards = GridView.count(
+      physics: ClampingScrollPhysics(),
+      shrinkWrap: true,
+      childAspectRatio: 0.75,
+      crossAxisCount: 2,
+      children: List.generate(items.length, (index) {
+        return GestureDetector(
+          child: Row(children: [
+            const SizedBox(width: 8.0),
+            Expanded(
+              child: _OpenContainerWrapper(
+                transitionType: _transitionType,
+                closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                  return _SmallerCard(
+                    product: items[index],
+                    openContainer: openContainer,
+                  );
+                },
+                onClosed: _showMarkedAsDoneSnackbar,
+                id: items[index],
+              ),
+            )
+          ]),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return ProductByCategory();
+                },
+              ),
+            );
+          },
+        );
+      }),
+    );
+  } else {
+    itemCards = Container(
+      child: Text('No items'),
+    );
+  }
+  return itemCards;
+}
+
 class _OpenContainerWrapper extends StatelessWidget {
   const _OpenContainerWrapper({
     this.closedBuilder,
     this.transitionType,
     this.onClosed,
+    this.id,
   });
 
   final OpenContainerBuilder closedBuilder;
   final ContainerTransitionType transitionType;
   final ClosedCallback<bool> onClosed;
+  final ProductModelAPI id;
 
   @override
   Widget build(BuildContext context) {
     return OpenContainer<bool>(
       transitionType: transitionType,
       openBuilder: (BuildContext context, VoidCallback _) {
-        return const _DetailsPage();
+        return Details(id);
       },
       onClosed: onClosed,
       tappable: false,
       closedBuilder: closedBuilder,
-    );
-  }
-}
-
-class _ExampleCard extends StatelessWidget {
-  const _ExampleCard({this.openContainer});
-
-  final VoidCallback openContainer;
-
-  @override
-  Widget build(BuildContext context) {
-    return _InkWellOverlay(
-      openContainer: openContainer,
-      height: 300,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              color: Colors.black38,
-              child: Center(
-                child: Image.asset(
-                  'assets/woocommerce_placeholder_300x300.png',
-                  width: 100,
-                ),
-              ),
-            ),
-          ),
-          const ListTile(
-            title: Text('Title'),
-            subtitle: Text('Secondary text'),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              bottom: 16.0,
-            ),
-            child: Text(
-              'Lorem ipsum dolor sit amet, consectetur '
-              'adipiscing elit, sed do eiusmod tempor.',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .copyWith(color: Colors.black54),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SmallerCard extends StatelessWidget {
-  const _SmallerCard({
-    this.openContainer,
-    this.subtitle,
-  });
-
-  final VoidCallback openContainer;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return _InkWellOverlay(
-      openContainer: openContainer,
-      height: 225,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            color: Colors.black38,
-            height: 150,
-            child: Center(
-              child: Image.asset(
-                'assets/placeholder_image.png',
-                width: 80,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Title',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ExampleSingleTile extends StatelessWidget {
-  const _ExampleSingleTile({this.openContainer});
-
-  final VoidCallback openContainer;
-
-  @override
-  Widget build(BuildContext context) {
-    const double height = 100.0;
-
-    return _InkWellOverlay(
-      openContainer: openContainer,
-      height: height,
-      child: Row(
-        children: <Widget>[
-          Container(
-            color: Colors.black38,
-            height: height,
-            width: height,
-            child: Center(
-              child: Image.asset(
-                'assets/placeholder_image.png',
-                width: 60,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Title',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                      'Lorem ipsum dolor sit amet, consectetur '
-                      'adipiscing elit,',
-                      style: Theme.of(context).textTheme.caption),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -465,6 +301,68 @@ class _InkWellOverlay extends StatelessWidget {
       child: InkWell(
         onTap: openContainer,
         child: child,
+      ),
+    );
+  }
+}
+
+class _SmallerCard extends StatelessWidget {
+  const _SmallerCard({
+    this.product,
+    this.openContainer,
+  });
+
+  final VoidCallback openContainer;
+  final ProductModelAPI product;
+
+  @override
+  Widget build(BuildContext context) {
+    String image;
+    if (product.images.length > 0) {
+      image = product.images.asMap()[0].src;
+    } else {
+      image =
+          "https://attraitbyaliroy.com/wp-content/uploads/woocommerce-placeholder-300x300.png";
+    }
+    return _InkWellOverlay(
+      openContainer: openContainer,
+      height: 225,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            height: 160,
+            child: Center(
+              child: Image.network(image,
+                  width: 160.0, height: 160.0, fit: BoxFit.cover),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    product.name,
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    product.price,
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

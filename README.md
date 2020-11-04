@@ -2,6 +2,8 @@
 
 A new Flutter application.
 
+![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

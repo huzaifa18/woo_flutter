@@ -1,8 +1,10 @@
 # woo_flutter
 
-A new Flutter application.
+A Flutter based woocommerce application with a sleek design and Support for both dark and light mode.
 
-![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg)
+![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_light.jpg) ![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/splash_dark.jpg)
+![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/home_light.jpg) ![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/home_dark.jpg)
+![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/details_light.jpg) ![](https://github.com/huzaifa18/woo_flutter/blob/master/assets/images/details_dark.jpg)
 
 ## Getting Started
 
